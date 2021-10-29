@@ -20,10 +20,9 @@ namespace PostWebAPI.Repositories
             this.connectionString = connectionString;
             blobServiceClient = new BlobServiceClient(this.connectionString);
             blobContainerClient = blobServiceClient.GetBlobContainerClient(this.container);
-
         }
 
-        internal void Add(string fileName, Stream stream)
+        public void Add(string fileName, Stream stream)
         {
             blobContainerClient.UploadBlob(fileName, stream);
         }

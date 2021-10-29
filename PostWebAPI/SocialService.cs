@@ -30,7 +30,7 @@ namespace PostWebAPI
             endPoint = _configuration.GetValue<string>("StorageEndpoint");
 
             _imageRepository = new ImageRepository(container, connectionString);
-           
+
             for (var i = 0; i < 5; i++)
             {
                 _postRepository.AddPost(new Post
@@ -51,14 +51,13 @@ namespace PostWebAPI
             return _postRepository.GetAllPosts();
         }
 
-        public void AddPost(IFormFile file, string caption, string id, Guid userId)
+        public void AddPost(string id, string caption, IFormFile file, Guid userId)
         {
-            var stream = file.OpenReadStream();
-            _imageRepository.Add(file.FileName, stream);
+            using (var stream = file.OpenReadStream())
+                _imageRepository.Add(file.FileName, stream);
 
             _postRepository.AddPost(new Post(caption) { PostId = id, UserId = userId, ImagePath = endPoint + "/jpeg/" + file.FileName + ".jpg" });
             _postRepository.Commit();
-
         }
 
         public void RemoveComment(string id)
@@ -69,7 +68,7 @@ namespace PostWebAPI
 
         public void AddComment(string id, string comment, Guid userId, string postId)
         {
-            _postRepository.AddComment(new Comment() { CommentId=id, Content = comment, UserId = userId, PostId = postId });
+            _postRepository.AddComment(new Comment() { CommentId = id, Content = comment, UserId = userId, PostId = postId });
             _postRepository.Commit();
         }
     }
