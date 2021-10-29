@@ -27,7 +27,7 @@ namespace PostWebAPI
         {
             services.AddControllers();
             services.AddSwaggerGen();
-            services.AddSingleton<SocialService>();
+            services.AddSingleton<SocialService>(x => new SocialService(Configuration));
 
         }
 

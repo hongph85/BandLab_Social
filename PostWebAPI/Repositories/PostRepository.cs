@@ -19,7 +19,7 @@ namespace PostWebAPI.Controllers
             return context.Posts.ToList();
         }
 
-        public void AddPost(Post post, IFormFile file = null)
+        public void AddPost(Post post)
         {
             context.Posts.Add(post);
         }
