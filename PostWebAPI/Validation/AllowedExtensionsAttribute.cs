@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PostWebAPI
+namespace PostWebAPI.Validation
 {
     public class AllowedExtensionsAttribute : ValidationAttribute
     {

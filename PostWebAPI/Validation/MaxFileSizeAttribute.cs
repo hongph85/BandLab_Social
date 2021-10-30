@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
-namespace PostWebAPI
+namespace PostWebAPI.Validation
 {
     public class MaxFileSizeAttribute : ValidationAttribute
     {

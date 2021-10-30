@@ -1,64 +1,23 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.Cosmos;
-using System;
+using PostWebAPI.Controllers;
+using PostWebAPI.Repositories;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace PostWebAPI.Controllers
+namespace PostWebAPI.Repositories
 {
-    public class PostRepository
+    public class PostRepository : ReadingPostRepository
     {
         CosmosDBContext context;
-        CosmosClient client;
-        private static readonly string CosmosDatabaseId = "BandlabDB";
-        private static readonly string containerId = "Posts";
 
-        public PostRepository(CosmosDBContext context, CosmosClient client)
+        public PostRepository(string cosmosDatabaseId, string containerId, string endpoint, string token) : base(cosmosDatabaseId, containerId, endpoint, token)
         {
-            this.context = context;
-            this.client = client;
+            context = new CosmosDBContext(endpoint, cosmosDatabaseId, token);
         }
 
         public IEnumerable<Post> GetAllPosts()
         {
             return context.Posts.ToList();
-        }
-
-        private async Task<Container> GetOrCreateContainerAsync(Database database, string containerId)
-        {
-            ContainerProperties containerProperties = new ContainerProperties(id: containerId, partitionKeyPath: "/PostId");
-
-            return await database.CreateContainerIfNotExistsAsync(
-                containerProperties: containerProperties,
-                throughput: 400);
-        }
-
-        public async Task<PostResponse> GetPosts(int pageSize, string continuationToken)
-        {
-            var postResponse = new PostResponse();
-
-            var cosmosDatabase = await client.CreateDatabaseIfNotExistsAsync(CosmosDatabaseId);
-            var _container = await GetOrCreateContainerAsync(cosmosDatabase, containerId);
-            var posts = new List<Post>();
-            var queryDef = new QueryDefinition("select * from Post p Order by p.TotalComments Desc");
-            string token = null;
-            if (!string.IsNullOrWhiteSpace(continuationToken))
-                token = continuationToken;
-
-            using FeedIterator<Post> resultSet = _container.GetItemQueryIterator<Post>(queryDefinition: queryDef, continuationToken: token, new QueryRequestOptions { MaxItemCount = pageSize });
-            {
-                var items = await resultSet.ReadNextAsync();
-                foreach (Post item in items)
-                {
-                    posts.Add(item);
-                }
-
-                postResponse.Posts = posts.OrderByDescending(x => x.RecentComments?.Count);
-                postResponse.ContinuationToken = items.ContinuationToken;
-            }
-
-            return postResponse;
         }
 
         public void AddPost(Post post)
@@ -100,9 +59,10 @@ namespace PostWebAPI.Controllers
             }
             else
             {
-                context.Comments.Add(new Comment() { 
-                    PostId = postId, 
-                    Comments = new List<CommentRow>() { item } 
+                context.Comments.Add(new Comment()
+                {
+                    PostId = postId,
+                    Comments = new List<CommentRow>() { item }
                 });
             }
         }
@@ -115,8 +75,9 @@ namespace PostWebAPI.Controllers
 
         public void DeleteComment(string postId, long id)
         {
-            var item = context.Comments.Where(x => x.PostId == postId && x.Comments.Any(y => y.Id == id)).FirstOrDefault();
-            context.Comments.Remove(item);
+            var commentsOfPost = context.Comments.Where(x => x.PostId == postId).FirstOrDefault();
+            var commentRow = commentsOfPost.Comments.Where(y => y.Id == id).FirstOrDefault();
+            commentsOfPost.Comments.Remove(commentRow);
         }
 
         public void Commit()
@@ -124,5 +85,11 @@ namespace PostWebAPI.Controllers
             context.SaveChanges();
         }
 
+        public override void Dispose()
+        {
+            base.Dispose();
+            context.Dispose();
+        }
     }
 }
+

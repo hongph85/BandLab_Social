@@ -8,8 +8,16 @@ namespace PostWebAPI
 {
     public class CosmosDBContext : DbContext
     {
-        public CosmosDBContext() : base()
+        public string endPoint;
+        public string dataBaseId;
+        public string token;
+
+        public CosmosDBContext(string endPoint, string dataBaseId, string token) : base()
         {
+            this.endPoint = endPoint;
+            this.dataBaseId = dataBaseId;
+            this.token = token;
+
             Database.EnsureDeleted();
             Database.EnsureCreated();
         }
@@ -32,9 +40,9 @@ namespace PostWebAPI
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseCosmos(
-                "https://localhost:8081",
-                 "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==", 
-                 databaseName: "BandlabDB");
+                endPoint,
+                 token, 
+                 databaseName: dataBaseId);
         }
     }
 }
