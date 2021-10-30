@@ -11,18 +11,23 @@ namespace PostWebAPI
     public class SocialService
     {
         private PostRepository _postRepository;
-        private string endPoint;
+        private string blobStorageEndpoint;
         private ImageRepository _imageRepository;
         private IConfiguration _configuration;
         public SocialService(IConfiguration configuration)
         {
             _configuration = configuration;
 
-            var container = _configuration.GetValue<string>("ORIGIN_CONTAINER_NAME");
-            var connectionString = _configuration.GetValue<string>("AzureWebJobsStorage");
-            endPoint = _configuration.GetValue<string>("StorageEndpoint");
-            _postRepository = new PostRepository("BandlabDB",  "Posts", "https://localhost:8081", "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==");
-            _imageRepository = new ImageRepository(container, connectionString);
+            var blobStorageConnection = _configuration.GetValue<string>("ImageBlobStorage:AzureWebJobsStorage");
+            blobStorageEndpoint = _configuration.GetValue<string>("ImageBlobStorage:StorageEndpoint");
+            var container = _configuration.GetValue<string>("ImageBlobStorage:ORIGIN_CONTAINER_NAME");
+
+            var cosmosEndpoint = _configuration.GetValue<string>("CosmosDB:Endpoint");
+            var cosmosDatabaseId = _configuration.GetValue<string>("CosmosDB:DatabaseId");
+            var cosmosSocialContainer = _configuration.GetValue<string>("CosmosDB:SocialContainer");
+            var cosmosAuthToken = _configuration.GetValue<string>("CosmosDB:AuthToken");
+            _postRepository = new PostRepository(cosmosDatabaseId, cosmosSocialContainer, cosmosEndpoint, cosmosAuthToken);
+            _imageRepository = new ImageRepository(container, blobStorageConnection);
 
             for (var i = 0; i < 5; i++)
             {
@@ -54,7 +59,7 @@ namespace PostWebAPI
             using (var stream = file.OpenReadStream())
                 _imageRepository.Add(file.FileName, stream);
 
-            _postRepository.AddPost(new Post(caption) { PostId = id, Author = author, ImagePath = endPoint + "/jpeg/" + file.FileName + ".jpg" });
+            _postRepository.AddPost(new Post(caption) { PostId = id, Author = author, ImagePath = blobStorageEndpoint + "/jpeg/" + file.FileName + ".jpg" });
             _postRepository.Commit();
         }
 
