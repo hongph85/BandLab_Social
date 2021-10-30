@@ -16,19 +16,16 @@ namespace PostWebAPI
 
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Post>()
                 .ToContainer("Posts")
-                .HasPartitionKey(x => x.PostId)
-                .HasDiscriminator<string>(nameof(Post.Type));
+                .HasPartitionKey(x => x.PostId).OwnsMany(x => x.RecentComments);
 
             modelBuilder.Entity<Comment>()
                 .ToContainer("Posts")
-                .HasPartitionKey(x => x.PostId)
-                .HasDiscriminator<string>(nameof(Comment.Type));
+                .HasPartitionKey(x => x.PostId).OwnsMany(x => x.Comments);
             base.OnModelCreating(modelBuilder);
         }
 

@@ -41,7 +41,7 @@ namespace PostWebAPI.Controllers
             var cosmosDatabase = await client.CreateDatabaseIfNotExistsAsync(CosmosDatabaseId);
             var _container = await GetOrCreateContainerAsync(cosmosDatabase, containerId);
             var posts = new List<Post>();
-            var queryDef = new QueryDefinition("select * from Post p");
+            var queryDef = new QueryDefinition("select * from Post p Order by p.TotalComments Desc");
             string token = null;
             if (!string.IsNullOrWhiteSpace(continuationToken))
                 token = continuationToken;
@@ -54,7 +54,7 @@ namespace PostWebAPI.Controllers
                     posts.Add(item);
                 }
 
-                postResponse.Posts = posts.OrderByDescending(x => x.Comments?.Count);
+                postResponse.Posts = posts.OrderByDescending(x => x.RecentComments?.Count);
                 postResponse.ContinuationToken = items.ContinuationToken;
             }
 
@@ -66,20 +66,56 @@ namespace PostWebAPI.Controllers
             context.Posts.Add(post);
         }
 
-        public void AddComment(Comment post)
+        public void AddComment(long id, string comment, string author, string postId)
         {
-            context.Comments.Add(post);
+            var currentPost = context.Posts.Where(x => x.PostId == postId).FirstOrDefault();
+            var item = new CommentRow()
+            {
+                Id = id,
+                Comment = comment,
+                Author = author
+            };
+
+            if (currentPost != null)
+            {
+                var firstRC = currentPost.RecentComments.FirstOrDefault();
+                if (firstRC != null)
+                {
+                    currentPost.RecentComments.Remove(currentPost.RecentComments.FirstOrDefault());
+                }
+                else
+                {
+                    currentPost.RecentComments = new List<CommentRow>();
+                }
+
+                currentPost.RecentComments.Add(item);
+                currentPost.TotalComments++;
+            }
+
+            var commentsOfPost = context.Comments.Where(x => x.PostId == postId).FirstOrDefault();
+
+            if (commentsOfPost != null)
+            {
+                commentsOfPost.Comments.Add(item);
+            }
+            else
+            {
+                context.Comments.Add(new Comment() { 
+                    PostId = postId, 
+                    Comments = new List<CommentRow>() { item } 
+                });
+            }
         }
 
         public void DeletePost(string id)
         {
-            var item = context.Posts.Where(x => x.PostId == id).FirstOrDefault();
-            context.Posts.Remove(item);
+            var post = context.Posts.Where(x => x.PostId == id).FirstOrDefault();
+            context.Posts.Remove(post);
         }
 
-        public void DeleteComment(string id)
+        public void DeleteComment(string postId, long id)
         {
-            var item = context.Comments.Where(x => x.CommentId == id).FirstOrDefault();
+            var item = context.Comments.Where(x => x.PostId == postId && x.Comments.Any(y => y.Id == id)).FirstOrDefault();
             context.Comments.Remove(item);
         }
 

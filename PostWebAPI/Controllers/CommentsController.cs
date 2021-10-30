@@ -20,16 +20,16 @@ namespace PostWebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(string id, string comment, string userId, string postId)
+        public IActionResult Create(long id, string comment, string author, string postId)
         {
-            _service.AddComment(id, comment, new Guid(userId), postId);
+            _service.AddComment(id, comment, author, postId);
             return Ok();
         }
 
         [HttpDelete]
-        public ActionResult Delete(string id)
+        public ActionResult Delete(string postId, long id)
         {
-            _service.RemoveComment(id);
+            _service.RemoveComment(postId, id);
             return Ok();
         }
     }

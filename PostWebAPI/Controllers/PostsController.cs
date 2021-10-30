@@ -32,11 +32,11 @@ namespace PostWebAPI.Controllers
             string id,
             string caption,
             [AllowedExtensions(new[] {".jpg", ".png", ".jpeg", ".bmp" })]
-            [MaxFileSize(100* 1024 * 1024)]
+            [MaxFileSize(100 * 1024 * 1024)]
             IFormFile file,
-            string userId)
+            string author)
         {
-            _service.AddPost(id, caption, file, new Guid(userId));
+            _service.AddPost(id, caption, file, author);
             return Ok();
         }
     }

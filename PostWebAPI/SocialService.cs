@@ -39,7 +39,7 @@ namespace PostWebAPI
                 {
                     PostId = "P" + i,
                     Caption = "Hong_" + i,
-                    User = new User() { Name = "User_" + i },
+                    Author = "User_" + i
                 }
                 );
             }
@@ -50,7 +50,7 @@ namespace PostWebAPI
 
         public IEnumerable<Post> GetPosts()
         {
-            return _postRepository.GetAllPosts().OrderByDescending(x => x.Comments?.Count);
+            return _postRepository.GetAllPosts().OrderByDescending(x => x.RecentComments?.Count);
         }
 
         public Task<PostResponse> GetPosts(int pageSize, string continuationToken)
@@ -58,24 +58,24 @@ namespace PostWebAPI
             return _postRepository.GetPosts(pageSize, continuationToken);
         }
 
-        public void AddPost(string id, string caption, IFormFile file, Guid userId)
+        public void AddPost(string id, string caption, IFormFile file, string author)
         {
             using (var stream = file.OpenReadStream())
                 _imageRepository.Add(file.FileName, stream);
 
-            _postRepository.AddPost(new Post(caption) { PostId = id, UserId = userId, ImagePath = endPoint + "/jpeg/" + file.FileName + ".jpg" });
+            _postRepository.AddPost(new Post(caption) { PostId = id, Author = author, ImagePath = endPoint + "/jpeg/" + file.FileName + ".jpg" });
             _postRepository.Commit();
         }
 
-        public void RemoveComment(string id)
+        public void RemoveComment(string postId, long commentId)
         {
-            _postRepository.DeleteComment(id);
+            _postRepository.DeleteComment(postId, commentId);
             _postRepository.Commit();
         }
 
-        public void AddComment(string id, string comment, Guid userId, string postId)
+        public void AddComment(long id, string comment, string author, string postId)
         {
-            _postRepository.AddComment(new Comment() { CommentId = id, Content = comment, UserId = userId, PostId = postId });
+            _postRepository.AddComment(id, comment, author, postId);
             _postRepository.Commit();
         }
     }

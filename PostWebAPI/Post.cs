@@ -19,29 +19,25 @@ namespace PostWebAPI
         public string PostId { get; set; }
         public string ImagePath { get; set; }
         public string Caption { get; set; }
-        public string Type = nameof(Post);
-        public User User { get; set; }
-        public Guid UserId { get; set; }
-        public ICollection<Comment> Comments { get; set; }
+
+        public ICollection<CommentRow> RecentComments { get; set; } = new List<CommentRow>();
+        public int TotalComments { get; set; }
+
+        public string Author { get; set; }
     }
 
     public class Comment
     {
         [Key]
-        public string CommentId { get; set; }
-        public string Content { get; set; }
         public string PostId { get; set; }
-        public User User { get; set; }
-        public Guid UserId { get; set; }
-        public string Type = nameof(Comment);
+
+        public ICollection<CommentRow> Comments { get; set; } = new List<CommentRow>();
     }
 
-    public class User
+    public class CommentRow
     {
-        public Guid UserId { get; set; }
-
-        public string Name { get; set; }
-
-        //public ICollection<Post> Posts { get; set; }
+        public long Id { get; set; }
+        public string Author { get; set; }
+        public string Comment { get; set; }
     }
 }
