@@ -5,7 +5,7 @@ namespace BandLab_Social.Infrastructure.Repositories
 {
     public interface IPagination
     {
-        Task<PostResponse> GetPosts(int pageSize, string continuationToken);
+        Task<PostPagination> GetPosts(int pageSize, string continuationToken);
     }
 }
 

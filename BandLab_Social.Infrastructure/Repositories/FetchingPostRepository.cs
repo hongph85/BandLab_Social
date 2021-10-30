@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace BandLab_Social.Infrastructure.Repositories
 {
-    public class ReadingPostRepository : IPagination, IDisposable
+    public class FetchingPostRepository : IPagination, IDisposable
     {
         CosmosClient client;
         private readonly string cosmosDatabaseId = "BandlabDB";
         private readonly string containerId = "Posts";
 
-        public ReadingPostRepository(string cosmosDatabaseId, string containerId, string endpoint, string token)
+        public FetchingPostRepository(string cosmosDatabaseId, string containerId, string endpoint, string token)
         {
             this.cosmosDatabaseId = cosmosDatabaseId;
             this.containerId = containerId;
@@ -29,9 +29,9 @@ namespace BandLab_Social.Infrastructure.Repositories
                 throughput: 400);
         }
 
-        public async Task<PostResponse> GetPosts(int pageSize, string continuationToken)
+        public async Task<PostPagination> GetPosts(int pageSize, string continuationToken)
         {
-            var postResponse = new PostResponse();
+            var postResponse = new PostPagination();
 
             var cosmosDatabase = await client.CreateDatabaseIfNotExistsAsync(cosmosDatabaseId);
             var _container = await GetOrCreateContainerAsync(cosmosDatabase, containerId);

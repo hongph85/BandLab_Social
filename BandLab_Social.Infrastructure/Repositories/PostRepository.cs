@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace BandLab_Social.Infrastructure.Repositories
 {
-    public class PostRepository : ReadingPostRepository
+    public class PostRepository : FetchingPostRepository
     {
         CosmosDBContext context;
 

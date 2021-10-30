@@ -49,7 +49,7 @@ namespace PostWebAPI
             return _postRepository.GetAllPosts().OrderByDescending(x => x.RecentComments?.Count);
         }
 
-        public Task<PostResponse> GetPosts(int pageSize, string continuationToken)
+        public Task<PostPagination> GetPosts(int pageSize, string continuationToken)
         {
             return _postRepository.GetPosts(pageSize, continuationToken);
         }

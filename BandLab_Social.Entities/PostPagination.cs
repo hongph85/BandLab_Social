@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BandLab_Social.Entities
 {
-    public class PostResponse
+    public class PostPagination
     {
         public IEnumerable<Post> Posts { get; set; }
         public string ContinuationToken { get; set; }
