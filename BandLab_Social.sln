@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageToJpg", "FunctionApp3\ImageToJpg.csproj", "{16DF84E9-EB12-4934-BCC3-ABD3225054D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageToJpg", "ImageToJpg\ImageToJpg.csproj", "{16DF84E9-EB12-4934-BCC3-ABD3225054D8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BandLab_Social.BackendAPI", "PostWebAPI\BandLab_Social.BackendAPI.csproj", "{E2B09A03-BCFA-47CE-98A9-D9D1F86A50A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BandLab_Social.BackendAPI", "BandLab_Social.BackEndAPI\BandLab_Social.BackendAPI.csproj", "{E2B09A03-BCFA-47CE-98A9-D9D1F86A50A3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BandLab_Social.Infrastructure", "BandLab_Social.Infrastructure\BandLab_Social.Infrastructure.csproj", "{3069344C-0F8A-497F-B455-3F4479F516AA}"
 EndProject
