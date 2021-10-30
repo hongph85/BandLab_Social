@@ -20,9 +20,10 @@ namespace PostWebAPI.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Post> Get()
+        public async Task<IActionResult> Get(string continuationToken, int pageSize = 1)
         {
-            return _service.GetPosts();
+            var result = await _service.GetPosts(pageSize, continuationToken);
+            return Ok(result);
         }
 
         [HttpPost]

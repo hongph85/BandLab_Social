@@ -1,5 +1,6 @@
 ﻿using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using PostWebAPI.Controllers;
 using PostWebAPI.Repositories;
@@ -22,7 +23,8 @@ namespace PostWebAPI
         public SocialService(IConfiguration configuration)
         {
             _context = new CosmosDBContext();
-            _postRepository = new PostRepository(_context);
+            var client = new CosmosClient("https://localhost:8081", "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==");
+            _postRepository = new PostRepository(_context, client);
             _configuration = configuration;
 
             var container = _configuration.GetValue<string>("ORIGIN_CONTAINER_NAME");
@@ -48,7 +50,12 @@ namespace PostWebAPI
 
         public IEnumerable<Post> GetPosts()
         {
-            return _postRepository.GetAllPosts();
+            return _postRepository.GetAllPosts().OrderByDescending(x => x.Comments?.Count);
+        }
+
+        public Task<PostResponse> GetPosts(int pageSize, string continuationToken)
+        {
+            return _postRepository.GetPosts(pageSize, continuationToken);
         }
 
         public void AddPost(string id, string caption, IFormFile file, Guid userId)

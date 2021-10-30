@@ -26,7 +26,7 @@ namespace PostWebAPI
                 .HasDiscriminator<string>(nameof(Post.Type));
 
             modelBuilder.Entity<Comment>()
-                .ToContainer("Comments")
+                .ToContainer("Posts")
                 .HasPartitionKey(x => x.PostId)
                 .HasDiscriminator<string>(nameof(Comment.Type));
             base.OnModelCreating(modelBuilder);

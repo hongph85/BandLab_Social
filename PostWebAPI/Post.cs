@@ -22,6 +22,7 @@ namespace PostWebAPI
         public string Type = nameof(Post);
         public User User { get; set; }
         public Guid UserId { get; set; }
+        public ICollection<Comment> Comments { get; set; }
     }
 
     public class Comment
