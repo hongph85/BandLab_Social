@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using BandLab_Social.Entities;
+using System.Threading.Tasks;
 
-namespace PostWebAPI.Repositories
+namespace BandLab_Social.Infrastructure.Repositories
 {
     public interface IPagination
     {

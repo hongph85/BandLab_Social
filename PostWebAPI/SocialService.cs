@@ -1,13 +1,8 @@
-﻿using Azure.Storage.Blobs;
+﻿using BandLab_Social.Entities;
+using BandLab_Social.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
-using PostWebAPI.Controllers;
-using PostWebAPI.Repositories;
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 

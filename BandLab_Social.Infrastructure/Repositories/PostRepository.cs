@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using PostWebAPI.Controllers;
-using PostWebAPI.Repositories;
+﻿using BandLab_Social.Entities;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PostWebAPI.Repositories
+namespace BandLab_Social.Infrastructure.Repositories
 {
     public class PostRepository : ReadingPostRepository
     {

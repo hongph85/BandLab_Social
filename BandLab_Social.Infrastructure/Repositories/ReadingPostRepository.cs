@@ -1,10 +1,11 @@
-﻿using Microsoft.Azure.Cosmos;
+﻿using BandLab_Social.Entities;
+using Microsoft.Azure.Cosmos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PostWebAPI.Repositories
+namespace BandLab_Social.Infrastructure.Repositories
 {
     public class ReadingPostRepository : IPagination, IDisposable
     {

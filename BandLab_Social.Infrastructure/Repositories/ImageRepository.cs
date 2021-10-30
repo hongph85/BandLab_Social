@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PostWebAPI.Repositories
+namespace BandLab_Social.Infrastructure.Repositories
 {
     public class ImageRepository
     {

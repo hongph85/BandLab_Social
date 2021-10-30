@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace PostWebAPI
+namespace BandLab_Social.Entities
 {
     public class Post
     {

@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BandLab_Social.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PostWebAPI
+namespace BandLab_Social.Infrastructure
 {
     public class CosmosDBContext : DbContext
     {

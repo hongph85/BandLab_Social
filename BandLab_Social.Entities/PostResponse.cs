@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PostWebAPI
+namespace BandLab_Social.Entities
 {
     public class PostResponse
     {
