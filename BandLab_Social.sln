@@ -5,11 +5,13 @@ VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageToJpg", "FunctionApp3\ImageToJpg.csproj", "{16DF84E9-EB12-4934-BCC3-ABD3225054D8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PostWebAPI", "PostWebAPI\PostWebAPI.csproj", "{E2B09A03-BCFA-47CE-98A9-D9D1F86A50A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BandLab_Social.BackendAPI", "PostWebAPI\BandLab_Social.BackendAPI.csproj", "{E2B09A03-BCFA-47CE-98A9-D9D1F86A50A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BandLab_Social.Infrastructure", "BandLab_Social.Infrastructure\BandLab_Social.Infrastructure.csproj", "{3069344C-0F8A-497F-B455-3F4479F516AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BandLab_Social.Infrastructure", "BandLab_Social.Infrastructure\BandLab_Social.Infrastructure.csproj", "{3069344C-0F8A-497F-B455-3F4479F516AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BandLab_Social.Entities", "BandLab_Social.Entities\BandLab_Social.Entities.csproj", "{A94E5D8D-57A9-4F8F-9F15-610A6FF5EF9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BandLab_Social.Entities", "BandLab_Social.Entities\BandLab_Social.Entities.csproj", "{A94E5D8D-57A9-4F8F-9F15-610A6FF5EF9F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Serverless", "Serverless", "{DAE5CE29-3FB3-4E03-A4BE-F2D2D3C3E75D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +38,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{16DF84E9-EB12-4934-BCC3-ABD3225054D8} = {DAE5CE29-3FB3-4E03-A4BE-F2D2D3C3E75D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1E152786-F909-4C25-81E7-382C26A31DC2}
