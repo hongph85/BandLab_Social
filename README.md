@@ -36,8 +36,9 @@ to each post
 - The web app accesses the back end service data and images via Traffic Manager. The web app can work in offline mode and continue processing data when online.
 - App service is used like as a backend (Restfull service) which process the posts/comments, store non-image data to the Cosmos database and store the origin image to the blob storage. This app is configured to auto scale.
 - Azure Functions used to converting any images to JPEG and output to the storage.
-- Azure Cosmos DB is used to store non-image data.
-- Blob storage is used to store the origin images and trigger events to the event grid.
+- Azure Cosmos DB is used to store non-image data to make sure high throughput and low latency
+- Azure Redis Cache is used with cache-aside pattern to optimize the performance.
+- Blob storage is used to store the origin images and trigger events to the event grid. Block blobs are optimized for uploading large amounts of data efficiently
 - Azure Traffic Manager controls the distribution of user traffic for service endpoints in different datacenters in order to deliver a highly responsive and available application.
 
 ## Roadmap
@@ -48,7 +49,7 @@ to each post
 - [ ] Apply Traffic Manager & configure app scale for backend
 - [ ] Mobile + web front end
 - [ ] Rename project to Imagegram
-
+- [ ] Apply redis cache and cache-aside pattern
 ## Bugs
 - Do not remove recent comments after remove comment.
 
